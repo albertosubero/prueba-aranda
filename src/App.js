@@ -80,6 +80,10 @@ function App() {
     }
   }
 
+  const refreshFavorites = () => {
+    setArtits(JSON.parse(localStorage.getItem('favorites')) || []);
+  }
+
   useEffect(() => {
     fetchArtists();
   }, []);
@@ -95,7 +99,7 @@ function App() {
         <div className="link" onClick={() => showFavoritesArtists()}>{!showFavorites ? ('Ver Artistas Favoritos'):('Volver al Top 12')}</div>
       </div>
       {artists.length > 0 && !loading ? (
-        <ArtistsList artists={artists} />
+        <ArtistsList artists={artists} refreshFavorites={refreshFavorites} />
       ) : ''}
       {artists.length === 0 && !loading ? (
         <div className="container">

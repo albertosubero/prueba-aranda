@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Modal, List, Icon, Accordion, Message, Dimmer, Loader, Image } from 'semantic-ui-react';
 import TrackList from '../TrackList';
-import SetFavoriteArtist from '../SetFavoriteArtist';
 
 function ArtistsDetails({open, modalActions, artistDetails, albums, artists, loading}) {
   const onAction = event => {
@@ -20,7 +19,6 @@ function ArtistsDetails({open, modalActions, artistDetails, albums, artists, loa
             <>
                 <Modal.Header>
                     {artistDetails.artist_name} - Discografía
-                    <SetFavoriteArtist id={artistDetails.artist_id} artists={artists} />
                 </Modal.Header>
                 <Modal.Content>
                     <Modal.Description>

@@ -1,31 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Icon } from 'semantic-ui-react';
 
-function SetFavoriteArtist({id, artists}) {
-    const [favoritesArtist, SetFavoriteArtists] = useState([]);
+function SetFavoriteArtist({id, artists, removeFavorite}) {
     const [color, SetColor]= useState('black');
-
     const setFavorite = () => {
-        SetFavoriteArtists(JSON.parse(localStorage.getItem('favorites')));
-        if(JSON.parse(localStorage.getItem('favorites')).find(x => x.artist.artist_id === id)) {
-            let index = favoritesArtist.map(function (item) {
+        var fav = [];
+        fav = JSON.parse(localStorage.getItem('favorites')) || [];
+        if(fav.find(x => x.artist.artist_id === id)) {
+            let index = fav.map(function (item) {
                 return item.artist.artist_id
             }).indexOf(id);
-            favoritesArtist.splice(index, 1);
-            localStorage.setItem('favorites', JSON.stringify(favoritesArtist));
+            fav.splice(index, 1);
+            localStorage.setItem('favorites', JSON.stringify(fav));
             SetColor('black');
-            console.log(favoritesArtist);
+            removeFavorite();
         } else {
-            favoritesArtist.push(artists.find(x => x.artist.artist_id === id));
-            localStorage.setItem('favorites', JSON.stringify(favoritesArtist));
+            fav.push(artists.find(x => x.artist.artist_id === id));
+            localStorage.setItem('favorites', JSON.stringify(fav));
             SetColor('yellow');
-            console.log(favoritesArtist);
         }
     }
 
+    useEffect(() => {
+        var fav = JSON.parse(localStorage.getItem('favorites')) || [];
+        if(fav.find(x => x.artist.artist_id === id)) {
+            SetColor('yellow');
+        }
+    }, []);
+
     return (
         <>
-        <Icon size='small' color={color} name='favorite' onClick={() => setFavorite()} />
+            <Icon size='small' color={color} name='favorite' onClick={() => setFavorite()} />
         </>
     );
 }

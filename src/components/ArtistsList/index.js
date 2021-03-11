@@ -5,7 +5,7 @@ import ArtistsDetails from '../ArtistDetails';
 import SetFavoriteArtist from '../SetFavoriteArtist';
 import { apiKey, apiUrl } from '../../config';
 
-function ArtistsList({artists}) {
+function ArtistsList({artists, refreshFavorites}) {
   const [isOpen, setIsOpen] = useState(false);
   const [artist, setArtist] = useState([]);
   const [albums, setAlbums] = useState([]);
@@ -17,6 +17,10 @@ function ArtistsList({artists}) {
 
     fetchArtistDetails(id);
     setArtistId(id);
+  }
+
+  const removeFavorite = () => {
+    refreshFavorites();
   }
 
   //Get Artist Details
@@ -78,7 +82,7 @@ function ArtistsList({artists}) {
           <div className="col-xs-12 col-sm-6 col-md-3" key={artist.artist.artist_id}>
             <StyledCard className="full-width">
               <StyledCard.Content>
-                <SetFavoriteArtist id={artist.artist.artist_id} artists={artists} />
+                <SetFavoriteArtist id={artist.artist.artist_id} artists={artists} removeFavorite={removeFavorite} />
                 <StyledCard.Header>{ artist.artist.artist_name }</StyledCard.Header>
                 <StyledCard.Meta>{ artist.artist.artist_country }</StyledCard.Meta>
                 <StyledCard.Description>
@@ -96,7 +100,7 @@ function ArtistsList({artists}) {
         ))}
         </div>
       </div>
-      <ArtistsDetails open={isOpen} modalActions={setIsOpen} artistDetails={artist} albums={albums} artists={artists} loading={loading} />
+      <ArtistsDetails open={isOpen} modalActions={setIsOpen} artistDetails={artist} albums={albums} artists={artists} loading={loading} removeFavorite={removeFavorite} />
     </>
   );
 }
